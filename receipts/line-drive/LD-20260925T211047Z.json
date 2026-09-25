@@ -1,0 +1,16 @@
+{
+ "v": "LINE-DRIVE-01",
+ "ts": "2026-09-25T21:10:47Z",
+ "line": "aiq",
+ "repos": [
+  "ai-quant-research"
+ ],
+ "events": [
+  {
+   "kind": "repo-unreadable",
+   "repo": "ai-quant-research",
+   "http": 403
+  }
+ ],
+ "acked": []
+}
