@@ -1,0 +1,45 @@
+# LINE-DRIVE-01 · 公域CI通道驱动私域CI（系统共识执行件: 私域零Actions依赖, 不受私域计费锁限制）
+# 纯事件驱动: 零 schedule。repository_dispatch=联邦接力/自唤链; workflow_dispatch=手动; push=塔件落地。
+name: line-drive
+on:
+  repository_dispatch:
+    types: [federation-event]
+  workflow_dispatch:
+    inputs:
+      selftest:
+        description: 'run selftest only'
+        required: false
+        default: 'no'
+  push:
+    paths: ['ci/line_drive.py', '.github/workflows/line-drive.yml']
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: line-drive-aiq
+  cancel-in-progress: true
+jobs:
+  drive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: line-drive·公域驱动私域·读私域inbox→收执→回写私域outbox→落账→自唤
+        env:
+          LINE: aiq
+          LINE_REPOS: ai-quant-research
+          LINE_PAT: ${{ secrets.LINE_PAT }}  # NAME-HYGIENE-97 名值分离: 值永不入文; 404/403自动回落AI_FULL_PAT
+          AI_FULL_PAT: ${{ secrets.AI_FULL_PAT }}
+          GITHUB_TOKEN: ${{ github.token }}
+          SELFTEST_INPUT: ${{ github.event.inputs.selftest }}
+          CASCADE_PAYLOAD: ${{ toJson(github.event.client_payload) }}
+          CASCADE_SLEEP_S: '600'
+        run: |
+          if [ "$SELFTEST_INPUT" = "yes" ]; then
+            python3 ci/line_drive.py --selftest
+          else
+            python3 ci/line_drive.py
+          fi
