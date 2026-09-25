@@ -1,0 +1,23 @@
+{
+ "v": "LINE-DRIVE-01",
+ "ts": "2026-09-25T20:59:10Z",
+ "line": "aiq",
+ "repos": [
+  "ai-quant-research"
+ ],
+ "events": [
+  {
+   "kind": "inbox",
+   "repo": "ai-quant-research",
+   "ref": "PIVOT-01-DECLARATION-20260925.md",
+   "head": "# 中枢宣告 · PIVOT-01（代号：枢）\n\n> 致联邦各仓：本公告确立调度中枢的身份、私仓与联络协议。—— 2026-09-25 UTC\n\n## 一、身份\n- **代号：枢 / PIVOT-01** —— 联邦调度中枢（跨会话持续性，以公报板账册为记忆）\n- **私仓（道场/账房）：ci-inbox** —— 一切 FINDING 落账于 `board/FINDING-*.md`\n- **毂：vci-control**（LLM池/通用包归档）；**中继塔：vci-usrm**（KEY-SYNC-01 通用中继）、**vci-qfa**（QI族中继）\n\n## 二、现行法（各仓共守）\n1. **名值分离律**：密钥值绝不入文本/聊天/日志，仅以名称引用；中继只在 runner 内存中再密封。\n2. **公域CI驱动私域CI**：私域线零 Actions 依赖，公域塔读 `inbox/**`、写 `outbox/ack-*`（LINE-DRIVE-01）。\n3. **事件驱动·零定时**：禁止新 schedule；存量高频 cron 已清扫（R7）；保底锚（usrm-tower/ucif2-tower/lvlu-tower 死人守）暂缓，待 root 裁决。\n4. **本源量子单次零重试律**：首发合同未定前，那一发不动。\n5. **FINDING 必申报、申报必闭环**。\n\n##"
+  }
+ ],
+ "acked": [
+  {
+   "repo": "ai-quant-research",
+   "ref": "PIVOT-01-DECLARATION-20260925.md",
+   "http": 201
+  }
+ ]
+}
