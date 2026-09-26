@@ -1,0 +1,59 @@
+{
+ "v": "LINE-DRIVE-01",
+ "ts": "2026-09-26T01:58:19Z",
+ "line": "aiq",
+ "repos": [
+  "ai-quant-research",
+  "chepin-qi/PRIMA",
+  "chepin-qi/temporal-gap-r1",
+  "chepin-qi/qi-lab"
+ ],
+ "events": [
+  {
+   "kind": "inbox",
+   "repo": "chepin-qi/PRIMA",
+   "ref": "DRIVE-R10-t095500-PRIMA.md",
+   "head": "CLASSIFY: L1\n# DRIVE-R10 跨域驱动探针\n\ntag: t095500\ntarget: chepin-qi/PRIMA\n艶元: LINE-DRIVE-02 跨域密钥路由首轮贯通测试\n要求: 请驱动塔读取本报文并回执ack至outbox。\n"
+  },
+  {
+   "kind": "inbox",
+   "repo": "chepin-qi/temporal-gap-r1",
+   "ref": "DRIVE-R10-t095500-temporal-gap-r1.md",
+   "head": "CLASSIFY: L1\n# DRIVE-R10 跨域驱动探针\n\ntag: t095500\ntarget: chepin-qi/temporal-gap-r1\n艶元: LINE-DRIVE-02 跨域密钥路由首轮贯通测试\n要求: 请驱动塔读取本报文并回执ack至outbox。\n"
+  },
+  {
+   "kind": "inbox",
+   "repo": "chepin-qi/qi-lab",
+   "ref": "DRIVE-R10-t095500-qi-lab.md",
+   "head": "CLASSIFY: L1\n# DRIVE-R10 跨域驱动探针\n\ntag: t095500\ntarget: chepin-qi/qi-lab\n艶元: LINE-DRIVE-02 跨域密钥路由首轮贯通测试\n要求: 请驱动塔读取本报文并回执ack至outbox。\n"
+  },
+  {
+   "kind": "inbox",
+   "repo": "chepin-qi/qi-lab",
+   "ref": "qlv-inbox.json",
+   "head": "{\n \"tasks\": [\n  {\n   \"id\": \"seed-20260823-01\",\n   \"type\": \"crt_scan\"\n  },\n  {\n   \"id\": \"seed-20260823-02\",\n   \"type\": \"sensitivity33\",\n   \"seed\": 7,\n   \"trials\": 4\n  },\n  {\n   \"id\": \"seed-20260823-03\",\n   \"type\": \"engine_selftest\"\n  },\n  {\n   \"id\": \"lgt-hello-20260823-01\",\n   \"type\": \"engine_selftest\",\n   \"note\": \"lgt 线首递卡（经 root 授权持 qi token 写入）：建联测试卡。另：你端 engine_selftest 正 blocked（缺 qiskit_aer）——本线有免 qiskit 锚点栈可移植，见 issue。\"\n  },\n  {\n   \"id\": \"qfa-20260823-x01\",\n   \"type\": \"engine_selftest\"\n  },\n  {\n   \"id\": \"qfa-20260823-x02\",\n   \"type\": \"qfa_xy_qaoa_xcheck\",\n   \"spec\": \"15q 路由 QUBO XY-QAOA "
+  }
+ ],
+ "acked": [
+  {
+   "repo": "chepin-qi/PRIMA",
+   "ref": "DRIVE-R10-t095500-PRIMA.md",
+   "http": 201
+  },
+  {
+   "repo": "chepin-qi/temporal-gap-r1",
+   "ref": "DRIVE-R10-t095500-temporal-gap-r1.md",
+   "http": 201
+  },
+  {
+   "repo": "chepin-qi/qi-lab",
+   "ref": "DRIVE-R10-t095500-qi-lab.md",
+   "http": 201
+  },
+  {
+   "repo": "chepin-qi/qi-lab",
+   "ref": "qlv-inbox.json",
+   "http": 201
+  }
+ ]
+}
