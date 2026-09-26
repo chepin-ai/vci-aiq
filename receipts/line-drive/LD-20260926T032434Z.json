@@ -1,0 +1,24 @@
+{
+ "v": "LINE-DRIVE-01",
+ "ts": "2026-09-26T03:24:34Z",
+ "line": "aiq",
+ "repos": [
+  "ai-quant-research",
+  "chepin-qi/PRIMA",
+  "chepin-qi/temporal-gap-r1",
+  "chepin-qi/qi-lab"
+ ],
+ "events": [
+  {
+   "kind": "repo-unreadable",
+   "repo": "ai-quant-research",
+   "http": 403
+  },
+  {
+   "kind": "repo-init",
+   "repo": "chepin-qi/PRIMA",
+   "http": 201
+  }
+ ],
+ "acked": []
+}
