@@ -30,9 +30,11 @@ jobs:
       - name: line-drive·公域驱动私域·读私域inbox→收执→回写私域outbox→落账→自唤
         env:
           LINE: aiq
-          LINE_REPOS: ai-quant-research
+          LINE_REPOS: ai-quant-research,chepin-qi/PRIMA,chepin-qi/temporal-gap-r1,chepin-qi/qi-lab
           LINE_PAT: ${{ secrets.LINE_PAT }}  # NAME-HYGIENE-97 名值分离: 值永不入文; 404/403自动回落AI_FULL_PAT
           AI_FULL_PAT: ${{ secrets.AI_FULL_PAT }}
+          QI_PAT: ${{ secrets.QI_PAT }}  # LINE-DRIVE-02 跨域: chepin-qi/*由QI族钥路由
+          GH_PAT_QI_FULL: ${{ secrets.GH_PAT_QI_FULL }}
           GITHUB_TOKEN: ${{ github.token }}
           SELFTEST_INPUT: ${{ github.event.inputs.selftest }}
           CASCADE_PAYLOAD: ${{ toJson(github.event.client_payload) }}
