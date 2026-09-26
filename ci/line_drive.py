@@ -1,4 +1,5 @@
-# line_drive.py — LINE-DRIVE-01 · 公域塔驱动私域线仓（系统共识: 公域CI通道驱动私域CI, 私域零Actions依赖）
+# line_drive.py — LINE-DRIVE-02 · 公域塔驱动私域线仓（跨域: chepin-qi 由 QI_PAT 路由）
+# 升级: LINE_REPOS 支持 owner/repo 全形式; 缺省前缀 chepin-ai; 按账户选钥(QI_PAT||GH_PAT_QI_FULL)（系统共识: 公域CI通道驱动私域CI, 私域零Actions依赖）
 # 纯事件驱动: 无定时器语义; 由 repository_dispatch / workflow_dispatch / 塔内链唤起。
 # 链: LINE_PAT 读私域线仓 inbox/** → 未消费件出收执 → 回写私域 outbox/ + 本塔 receipts → 有候件自唤下一拍。
 # 律: 名值分离(NAME-HYGIENE-97)——值永不入文、永不打印; seen集防重; 空转计数熔断。
@@ -13,6 +14,16 @@ SELFTEST = '--selftest' in sys.argv
 def _env(n):
     v = os.environ.get(n, '').strip()
     return v or None
+
+def repo_full(lr):
+    return lr if '/' in lr else 'chepin-ai/' + lr
+
+QIKEY = None
+def key_for(lr):
+    # 跨域路由: chepin-qi/* 用 QI 族钥; 其余用主选钥
+    if repo_full(lr).startswith('chepin-qi/'):
+        return QIKEY or _env('QI_PAT') or _env('GH_PAT_QI_FULL') or PAT_MAIN
+    return PAT_MAIN
 
 def gh(pat, path, method='GET', data=None):
     req = urllib.request.Request(GH + path, method=method, headers={
@@ -60,6 +71,9 @@ def main():
         if _v and _v not in pats: pats.append(_v)
     ghtok = _env('GITHUB_TOKEN')
     pat = pats[0] if pats else None
+    global PAT_MAIN, QIKEY
+    PAT_MAIN = pat
+    QIKEY = _env('QI_PAT') or _env('GH_PAT_QI_FULL')
     print('[env] names-only:', {n: ('present' if _env(n) else 'MISSING') for n in ('LINE_PAT','AI_FULL_PAT','GITHUB_TOKEN')})
     os.makedirs('receipts/line-drive', exist_ok=True)
 
@@ -90,7 +104,7 @@ def main():
         if pat:
             c,u = gh(pat,'/user'); st['whoami_http']=c; st['login']=u.get('login','?')
             for lr in LINE_REPOS:
-                c,_ = gh(pat, f'/repos/chepin-ai/{lr}'); st.setdefault('repo_access',{})[lr]=c
+                c,_ = gh(key_for(lr), f'/repos/{repo_full(lr)}'); st.setdefault('repo_access',{})[lr]=c
         fp = f'receipts/line-drive/SELFTEST-{tst}.json'
         open(fp,'w').write(json.dumps(st, ensure_ascii=False, indent=1))
         print('[selftest]', json.dumps(st, ensure_ascii=False))
@@ -99,9 +113,9 @@ def main():
 
     # ---- 选钥: 以首仓实测可读性为准（细粒度钥404=无权 → 回落次钥） ----
     if len(pats) > 1 and LINE_REPOS:
-        c0, _ = gh(pats[0], f'/repos/chepin-ai/{LINE_REPOS[0]}')
+        c0, _ = gh(pats[0], f'/repos/{repo_full(LINE_REPOS[0])}')
         if c0 in (403, 404):
-            c1, _ = gh(pats[1], f'/repos/chepin-ai/{LINE_REPOS[0]}')
+            c1, _ = gh(pats[1], f'/repos/{repo_full(LINE_REPOS[0])}')
             if c1 == 200:
                 print('[key] primary rejected (%d), fallback key selected' % c0)
                 pat = pats[1]
@@ -111,12 +125,12 @@ def main():
     events = []
     for lr in LINE_REPOS:
         if not pat: break
-        c, lst = gh(pat, f'/repos/chepin-ai/{lr}/contents/inbox')
+        c, lst = gh(key_for(lr), f'/repos/{repo_full(lr)}/contents/inbox')
         if c == 404:
             # inbox 未建: 驱动即建（公域写入私域的第一件）
             body = {'message': f'inbox 目录建制 (LINE-DRIVE-01 公域驱动, {ts}) [skip ci]',
                     'content': base64.b64encode(b'').decode()}
-            c2, _ = gh(pat, f'/repos/chepin-ai/{lr}/contents/inbox/.gitkeep', method='PUT', data=body)
+            c2, _ = gh(key_for(lr), f'/repos/{repo_full(lr)}/contents/inbox/.gitkeep', method='PUT', data=body)
             events.append({'kind':'repo-init','repo':lr,'http':c2})
             continue
         if not isinstance(lst, list):
@@ -124,7 +138,7 @@ def main():
         for x in lst:
             ref = f'{lr}:{x["name"]}'
             if ref in seen or x['name'].startswith('.'): continue
-            c3, fobj = gh(pat, f'/repos/chepin-ai/{lr}/contents/inbox/{urllib.parse.quote(x["name"])}')
+            c3, fobj = gh(key_for(lr), f'/repos/{repo_full(lr)}/contents/inbox/{urllib.parse.quote(x["name"])}')
             head = ''
             if isinstance(fobj, dict) and fobj.get('content'):
                 head = base64.b64decode(fobj['content']).decode(errors='replace')[:600]
@@ -138,10 +152,10 @@ def main():
         lr, name = e['repo'], e['ref']
         ack = {'v':'LINE-DRIVE-01','ts':ts,'tower':TOWER,'line':LINE,
                'src':f'inbox/{name}','head_excerpt':e.get('head','')[:300],
-               'law':'公域CI通道驱动私域CI; 名值分离; 事件驱动'}
+               'law':'公域CI通道驱动私域CI; 名值分离; 事件驱动' + ('; 跨域QI路由' if repo_full(lr).startswith('chepin-qi/') else '')}
         body = {'message': f'outbox收执 {name} (LINE-DRIVE-01@{LINE}) [skip ci]',
                 'content': base64.b64encode(json.dumps(ack,ensure_ascii=False,indent=1).encode()).decode()}
-        c4, _ = gh(pat, f'/repos/chepin-ai/{lr}/contents/outbox/ack-{tst}-{name.replace("/","_")}.json', method='PUT', data=body)
+        c4, _ = gh(key_for(lr), f'/repos/{repo_full(lr)}/contents/outbox/ack-{tst}-{name.replace("/","_")}.json', method='PUT', data=body)
         acked.append({'repo':lr,'ref':name,'http':c4})
         seen.add(f'{lr}:{name}')
     print('[drive] acked:', acked)
