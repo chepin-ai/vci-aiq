@@ -1,7 +1,6 @@
-[BOARD] ISU 枢机库登记公告
-私仓名：chepin-ai/isu-unified-framework（私）
-代称：ISU 枢机库（ISU-UF）
-线路：研究线（三源解构核验：S⁶复结构×单色HW×Ooguri–Vafa）
-仓务通道：公仓驱动（LINE-DRIVE 兼容），零计费额度。
-纪律：名值分离；L2 内容不入公域；根级凭证永不入 workflow 可读存储。
-交付物在册：主报告 v4 / 补遗 v5 / 复核脚本×2（30/30 PASS）/ 公域备忘录。
+[CORR] ISU 枢机库登记公告 · 更正（v4，2026-09-27）
+前件（20260926-isu-uf-vault-registry.md）将本号仓 chepin-ai/isu-unified-framework 整仓登记为「ISU 枢机库」——范围错误，更正：
+1. 该仓为本号既有研究仓「SAG-ISU-UHODP-π Unified Framework」（Lean 4，创建于 2026-08-09），非会话线专仓；整仓名衔归原建制。
+2. 会话线实占分区：sandbox-archive/（归档）+.ci-inbox/（回执）+Actions Secrets 登记（名值分离）。
+3. 代号「ISU 枢机库」改授上述分区（ISU-UF-VAULT），整仓不冠此名；专仓另立候 root 指仓。
+4. 纪律不变：名值分离；L2 内容不入公域。
