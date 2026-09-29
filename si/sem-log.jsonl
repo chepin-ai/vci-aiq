@@ -1,3 +1,4 @@
 {"line": "aiq", "ts": "20260929T021219Z", "sem_handled": [], "sem_answers": 0}
 {"line": "aiq", "ts": "20260929T101135Z", "sem_handled": ["WILDQ-R23-CGICE-AIQ-01.md"], "sem_answers": 1}
 {"line": "aiq", "ts": "20260929T102806Z", "sem_handled": ["WILDQ-R24-SAT-AIQ-01.md"], "sem_answers": 1}
+{"line": "aiq", "ts": "20260929T171415Z", "sem_handled": ["WILDQ-R25-EXEC-AIQ-01.md"], "sem_answers": 1}
