@@ -1,0 +1,101 @@
+name: SEMANTIC-RESPONDER-04 (枢PIVOT-01代铸aiq版·源vci-qfa·机读缺口补位·覆写权归原线·precedent lgt-118)
+'on':
+  workflow_dispatch:
+  push:
+    paths: ['inbox/**']
+permissions:
+  contents: write
+env:
+  KIMI_API_KEY: ${{ secrets.KIMI_API_KEY }}
+  DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+jobs:
+  semresp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: semantic-respond
+        run: |
+          python3 - <<'PYEOF'
+          import os, json, subprocess, datetime, hashlib, glob, re, urllib.request, urllib.error
+          ts=datetime.datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')
+          LINE='aiq'
+          os.makedirs('inbox',exist_ok=True); os.makedirs('outbox',exist_ok=True); os.makedirs('si',exist_ok=True)
+          stf='si/sem-state.json'
+          try: stt=json.load(open(stf))
+          except Exception: stt={'done':[]}
+          done=set(stt['done'])
+          def llm(question, context):
+              # 多机回退: kimi裸body迭代→deepseek (名可见值不见)
+              key=os.environ.get('KIMI_API_KEY','')
+              if key:
+                  base='https://api.moonshot.cn/v1'
+                  H={'Authorization':'Bearer '+key,'Content-Type':'application/json'}
+                  cands=[]
+                  try:
+                      rq=urllib.request.Request(base+'/models',headers=H)
+                      with urllib.request.urlopen(rq,timeout=20) as r: ms=json.loads(r.read()).get('data',[])
+                      cands=[m['id'] for m in ms]
+                  except Exception as e:
+                      print(json.dumps({'models_fail':getattr(e,'code',-1)}))
+                  for model in cands[:6]:
+                      body={'model':model,'messages':[
+                          {'role':'system','content':'你是qfa线SI1席层应答机(vinf代铸语义轨,覆写权归原线)。以联邦纪律(诚实缺口/三即律/负结果入册/级名不滥)作答,务实精炼,中文,300-500字。'+context},
+                          {'role':'user','content':question}]}
+                      try:
+                          rq=urllib.request.Request(base+'/chat/completions',data=json.dumps(body).encode(),headers=H,method='POST')
+                          with urllib.request.urlopen(rq,timeout=90) as r: d=json.loads(r.read())
+                          return {'engine':'KIMI_API_KEY','model':model,'usage':d.get('usage',{}),'answer':d['choices'][0]['message']['content']}
+                      except urllib.error.HTTPError as e:
+                          print(json.dumps({'llm_fail':model,'code':e.code})); continue
+                      except Exception as e:
+                          print(json.dumps({'llm_fail':model,'err':str(e)[:60]})); continue
+              dk=os.environ.get('DEEPSEEK_API_KEY','')
+              if dk:
+                  try:
+                      body={'model':'deepseek-chat','messages':[{'role':'user','content':question[:1500]}]}
+                      rq=urllib.request.Request('https://api.deepseek.com/v1/chat/completions',data=json.dumps(body).encode(),
+                          headers={'Authorization':'Bearer '+dk,'Content-Type':'application/json'},method='POST')
+                      with urllib.request.urlopen(rq,timeout=90) as r: d=json.loads(r.read())
+                      return {'engine':'DEEPSEEK_API_KEY','model':'deepseek-chat','usage':d.get('usage',{}),'answer':d['choices'][0]['message']['content']}
+                  except Exception as e:
+                      print(json.dumps({'ds_fail':getattr(e,'code',str(e)[:40])}))
+              return None
+          handled=[]; sem=[]
+          for card in sorted(glob.glob('inbox/*.md')):
+              nm=os.path.basename(card)
+              if nm in done: continue
+              try: t=open(card,encoding='utf-8',errors='replace').read()
+              except Exception: continue
+              m=re.search(r"```json\s*(\{.*?\})\s*```",t,re.S)
+              if not m: continue
+              try: tj=json.loads(m.group(1))
+              except Exception: continue
+              ask=tj.get('ask')
+              if not ask: continue
+              r=llm(str(ask)[:1500],'应卡='+nm)
+              if not r: continue
+              op='outbox/ANS-SEM-%s'%nm  # 双层答件分轨律: L2语义面独立于L1机层output,不竞写不覆写
+              body='CLASSIFY: L2(%s SI1语义应答·vinf代铸轨SEMANTIC-RESPONDER-01·覆写权归原线)\n# %s\n\n应卡: inbox/%s\n引擎: %s/%s usage=%s\n\n%s\n\n——%s SI1语义轨·%s\n'%(LINE,op,nm,r['engine'],r['model'],json.dumps(r['usage']),r['answer'],LINE,ts)
+              open(op,'w',encoding='utf-8').write(body)
+              handled.append(nm); sem.append({'card':nm,'out':op,'model':r['model'],
+                  'ans_fp':hashlib.sha256(r['answer'].encode()).hexdigest()[:12],'ans_head':r['answer'][:300]})
+              done.add(nm)
+          log={'line':LINE,'ts':ts,'sem_handled':handled,'sem_answers':len(sem)}
+          open('si/sem-log.jsonl','a').write(json.dumps(log,ensure_ascii=False)+'\n')
+          stt['done']=sorted(done); json.dump(stt,open(stf,'w'))
+          subprocess.run(['git','config','user.name','qfa-sem-responder']); subprocess.run(['git','config','user.email','sem@ci'])
+          subprocess.run(['git','add','outbox','si'])
+          c=subprocess.run(['git','commit','-m','SEMANTIC-RESPONDER拍 %s sem=%d'%(ts,len(sem))],capture_output=True,text=True)
+          push='skip(no-change)'
+          if c.returncode==0:
+              import time as _t
+              for i in range(4):
+                  subprocess.run(['git','fetch','-q','origin','main'],capture_output=True)
+                  rb=subprocess.run(['git','rebase','origin/main'],capture_output=True,text=True)
+                  q=subprocess.run(['git','push','-q','origin','HEAD:main'],capture_output=True,text=True)
+                  if q.returncode==0: push='ok'; break
+                  if rb.returncode!=0: subprocess.run(['git','rebase','--abort'],capture_output=True)
+                  _t.sleep(2+i*2)
+              else: push='fail:'+q.stderr[:60]
+          print(json.dumps({'line':LINE,'ts':ts,'sem_handled':len(handled),'sem':sem,'push':push},ensure_ascii=False))
+          PYEOF
