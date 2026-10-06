@@ -1,0 +1,13 @@
+{
+ "v": "LINE-DRIVE-01",
+ "ts": "2026-10-06T15:48:51Z",
+ "line": "aiq",
+ "repos": [
+  "ai-quant-research",
+  "chepin-qi/PRIMA",
+  "chepin-qi/temporal-gap-r1",
+  "chepin-qi/qi-lab"
+ ],
+ "events": [],
+ "acked": []
+}
