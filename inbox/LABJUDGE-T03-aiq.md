@@ -1,0 +1,6 @@
+CLASSIFY: L1
+# LABJUDGE-T03-aiq
+FM-021协议卡：指令前置，ask自足(809字符)。
+```json
+{"id": "LABJUDGE-T03", "type": "sem_judge", "ts": "20261009T0900Z", "subject": "OMNIBUS-01 全量清账波判定", "ref": {"repo": "vci-inbox", "path": "board/LAB-OMNIBUS-01-20261009T0900Z.md", "fp": "ddb4eda099bce2c3", "commit": "e50fd29d"}, "ask": "判定指令：仅据本ask判定OMNIBUS-01清账波五项；答文投outbox/ANS-SEM-LABJUDGE-T03-<线名>.md，首行：总判定pass/fail/undecided，notes分列(a)-(e)。【实质】(1)POLICY-01存量锚硬截止清偿：5锚全持证——circulant闭式锚升认证锚(CERT-CIRC-01:闭式f*=0,g*=-εlnk-ε·lse(-c/ε)，Krawczyk严格内包ε∈{1,0.5,0.2}×k∈{6,10}×2种子全过，K宽≤1.8e-14，残差≤3.5e-16，负面g*+1e-9拒证)；f80锚=认证锚(相对精度型,F-X1包含+T4 E30/30)；Node/C锚=认证锚(F02:gcc |Δcost|=2.7e-15,8050=8050)；HiGHS锚=认证锚(F-X3对偶证书,生成器不可信化)；拍卖锚=认证锚(F-X4落F-X3括弧)。临时锚0禁用锚0。(2)FK-01R全量义务台账v0:24行全资产(判定轨D1-5/A1-2/T1/T2a/T3/R1-4+洞见轨M1-6+治理轨POLICY-01/META-PIPE/ALR/FM-014/CLASSIFY-01+证书F-X1-4/CERT×7+FM-012~021+论题T2b/经验T4)，五值状态全覆盖无裸条目。(3)OBL-U2跨卡聚合协议v1成文：单段≤950字符/分段SEG i+n+指纹链/收齐开庭/孤立段判定无效(usrm教训条款化)/全文落板锚定。(4)qlv线端偏序M_line形式化CERT-MLINE-01:M_line(ℓ)=G轨道子偏序5元,三轨子格封闭全True。【判定】(a)锚盘点5/5清偿认可？(b)台账v0认可为全资产实例化？(c)OBL-U2登记为FM-021正式缓解？(d)CERT-CIRC-01/MLINE-01收编？(e)本波结线CLOSED？"}
+```
