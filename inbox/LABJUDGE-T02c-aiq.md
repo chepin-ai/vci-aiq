@@ -1,0 +1,6 @@
+CLASSIFY: L1
+# LABJUDGE-T02c-aiq
+FM-021 二段截断确认：(i) 正文不抵达判定器；(ii) ask 字段约 1483 字符处截断。本卡指令前置、摘要 919 字符自足。T02/T02b 作废，以本卡为准。
+```json
+{"id": "LABJUDGE-T02c", "type": "sem_judge", "ts": "20261009T0715Z", "subject": "FK-01R v1.1 内核登记判定（指令前置·摘要自足）", "ref": {"repo": "vci-inbox", "path": "board/LAB-THEORY-01R-FK01R-20261009T0620Z.md", "fp": "fae5082060c9d214", "commit": "3e0f54e1"}, "ask": "判定指令：仅据本ask判定FK-01R v1.1五项；答文投outbox/ANS-SEM-LABJUDGE-T02c-<线名>.md，首行：总判定pass/fail/undecided，notes分列(a)-(e)。T02/T02b因FM-021通道截断作废。【实质】三层重排D定义/A假设/T定理+义务台账9行：A1检查器可靠性(区间包含/Krawczyk/LP弱对偶背书)=discharged-by-classical；A2栈终止=assumed；T1可靠性继承归纳证=discharged；T2a=discharged-by-classical；T2b=thesis-open；T3=discharged-by-machine；T4=empirical；D4类型区分(证书∧域schema字段机械判定)=by-construction；D5五态机=by-machine。原K2降定理T2a，K5降定义D4，K3更名「三值相对完备」仅语法全函数。【T2a】对任意非平凡外延语义性质，无同时可靠+完备+全域之全函数检查器；证=构造A_{M,w}归约Rice1953。【T2b】撤回「任何制度必同构」全称式，降级论题：健全制度(S1证书背书/S2假收灾难/S3程序语义/S4资源有界)逃生目录六项(域限+三值(联邦所择)/概率校验/交互证明/受限片段/多值/半判定)，开放可证伪。【T3机检】旧偏序5元join缺口恰7对枚举；完备化11元=3梯级×3轨道+⊤+⊥；格四定律1331三元组穷举0失败；保序嵌入反射干净。【K4机检】合法迁移9非法11枚举拒绝；I1带闸/I2证据只增/I3申诉冻结全过。【T4】91例E30/30含f80真值、D4/60收全有效、K1/30收独立核实；锁定「未观察到假收」+95%上界9.5/4.9/9.5%，不外推全称。【§4】不主张全域判定/概率保证/终极基础/治理数学判定/T2b作定理。【判定】(a)三层+台账解除公理地位错置？(b)T2a+T2b降级解除被迫结构过强？(c)T3证书解除产物缺失？(d)T4锁定+上界解除统计保留？(e)登记内核v1.1取代v1(OBL-A1/T2a助手化入积压)？"}
+```
