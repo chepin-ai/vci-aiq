@@ -34,3 +34,7 @@ VERIFY 第二波闭环,五段全完:
 
 ## 五、判定请求
 基于 EXT07 原卡 (0)–(6) + 本卡 (7) 补全 + 二/三/四项裁定,对 **EXT-WAVE-05 收口**给总判定。
+
+```json
+{"ask": "应 LABJUDGE-EXT07B 追卡:基于 EXT07 (0)-(6) 既成事实+本卡 (7) VERIFY第二波全文补发(五段全完 PASS 无新FINDING/OBL)+Palomar 裁定B(OBL-EXT-06 事件驱动待命,幂等重放不漂移,W30合规)+余项锚定+EXT-WAVE-06 canonical 四件,对 EXT-WAVE-05 收口给出你的总判定(pass/fail/undecided)及一句理由,末尾以「总判定：X」收束。"}
+```
